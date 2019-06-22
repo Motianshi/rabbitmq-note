@@ -1,12 +1,19 @@
-[TOC]
-
+- [RabbitMQ 特点](#rabbitmq---)
+- [AMQP 协议](#amqp---)
+- [RabbitMQ 消息传递机制](#rabbitmq-------)
+- [Message](#message)
+- [Exchange](#exchange)
+  * [1. 简介](#1---)
+  * [2. 类型](#2---)
+  * [3. 属性](#3---)
 ------
 
-### RabbitMQ 特点
+
+## RabbitMQ 特点
 
 RabbitMQ 相较于其他消息队列，有一系列防止消息丢失的措施，拥有强悍的高可用性能，它的吞吐量可能没有其他消息队列大，但是其消息的保障性出类拔萃，被广泛用于金融类业务。与其他消息队列的比较以及强大的防止消息丢失的能力我们将在后续文章再做介绍。
 
-### AMQP 协议
+## AMQP 协议
 
 AMQP: Advanced Message Queuing Protocol 高级消息队列协议
 
@@ -17,7 +24,7 @@ Erlang的优点: Erlang有着和原生Socket一样的延迟。
 
 RabbitMQ是一个开源的消息代理和队列服务器，用来通过普通协议在完全不同的应用之间共享数据, RabbitMQ是使用Erlang语言来编写的，并且RabbitMQ是基于AMQP协议的。
 
-###RabbitMQ 消息传递机制
+## RabbitMQ 消息传递机制
 
 生产者发送消息到指定的 Exchange，Exchange 依据自身的类型(direct、topic等)，根据 routing key 将消息发送给 0 - n 个 队列，队列再将消息转发给了消费者。
 
@@ -37,7 +44,7 @@ RabbitMQ是一个开源的消息代理和队列服务器，用来通过普通协
 
 **Queue:** 也称为Message Queue,消息队列，保存消息并将它们转发给消费者。
 
-###Message 
+## Message 
 
 消息，服务器和应用程序之间传送的数据，由 Properties 和 Body 组成。Properties 可以对消息进行修饰，比如消息的优先级、延迟等高级特性;，Body 则就 是消息体内容。
 
@@ -154,13 +161,13 @@ head: 111
 100000
 ```
 
-###Exchange
+## Exchange
 
-#### 1. 简介
+### 1. 简介
 
 Exchange 就是交换机，接收消息，根据路由键转发消息到绑定的队列。有很多的 Message 进入到 Exchange 中，Exchange 根据 Routing key 将 Message 分发到不同的 Queue 中。
 
-#### 2. 类型
+### 2. 类型
 
 RabbitMQ 中的 Exchange 有多种类型，类型不同，Message 的分发机制不同，如下：
 
@@ -170,7 +177,7 @@ RabbitMQ 中的 Exchange 有多种类型，类型不同，Message 的分发机�
 + Topic：这种类型的 Exchange 会根据 Routing key（模糊匹配，将Message分发到指定的Queue。
 + headers: 主题交换机有点相似，但是不同于主题交换机的路由是基于路由键，头交换机的路由值基于消息的header数据。 主题交换机路由键只有是字符串,而头交换机可以是整型和哈希值 .
 
-#### 3. 属性
+### 3. 属性
 
 ```java
    /**

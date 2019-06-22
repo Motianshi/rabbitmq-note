@@ -1,20 +1,28 @@
-[TOC]
-
+- [生产端 Confirm 消息确认机制](#----confirm-------)
+  * [Confirm 确认机制流程图](#confirm--------)
+  * [如何实现Confirm确认消息?](#----confirm-----)
+  * [注意事项](#----)
+- [Return 消息机制](#return-----)
+  * [Return 消息机制流程图](#return--------)
+  * [Return 消息式例](#return-----)
+- [消费端 Ack 和 Nack 机制](#----ack---nack---)
+  * [参考 api](#---api)
+  * [如何设置手动 Ack 、Nack 以及重回队列](#-------ack--nack-------)
 -------
 
-### 生产端 Confirm 消息确认机制
+## 生产端 Confirm 消息确认机制
 
 消息的确认，是指生产者投递消息后，如果 Broker 收到消息，则会给我们生产者一个应答。生产者进行接收应答，用来确定这条消息是否正常的发送到 Broker ，这种方式也是消息的可靠性投递的核心保障!
 
 
 
-####Confirm 确认机制流程图
+### Confirm 确认机制流程图
 
 ![image-20190521135224438](img/image-20190521135224438.png)
 
 
 
-####如何实现Confirm确认消息?
+### 如何实现Confirm确认消息?
 
 + 第一步:在 channel 上开启确认模式: `channel.confirmSelect()`
 + 第二步:在 channel 上添加监听: `channel.addConfirmListener(ConfirmListener listener);`, 监听成功和失败的返回结果，根据具体的结果对消息进行重新发送、或记录日志等后续处理!
@@ -140,7 +148,7 @@ true
 
 
 
-#### 注意事项
+### 注意事项
 
 + 我们采用的是异步 confirm 模式：提供一个回调方法，服务端 confirm 了一条或者多条消息后 Client 端会回调这个方法。除此之外还有单条同步 confirm 模式、批量同步 confirm 模式，由于现实场景中很少使用我们在此不做介绍，如有兴趣直接参考官方文档。
 
@@ -162,7 +170,7 @@ true
 
 
 
-###Return 消息机制
+## Return 消息机制
 
 + Return Listener 用于处理一-些不可路 由的消息!
 + 消息生产者，通过指定一个 `Exchange` 和 `Routingkey`，把消息送达到某一个队列中去，然后我们的消费者监听队列，进行消费处理操作!
@@ -172,13 +180,13 @@ true
 
 
 
-####Return 消息机制流程图
+### Return 消息机制流程图
 
 ![image-20190521135648673](img/image-20190521135648673.png)
 
 
 
-####Return 消息式例
+### Return 消息式例
 
 + 首先我们需要发送三条消息，并且故意将第 0 条消息的 `routing Key`设置为错误的，让他无法正常路由到消费端。
 
@@ -326,13 +334,13 @@ succuss ack
 
 
 
-### 消费端 Ack 和 Nack 机制
+## 消费端 Ack 和 Nack 机制
 
 消费端进行消费的时候，如果由于业务异常我们可以进行日志的记录，然后进行补偿!如果由于服务器宕机等严重问题，那我们就需要手工进行ACK保障消费端消费成功!消费端重回队列是为了对没有处理成功的消息，把消息重新会递给Broker!一般我们在实际应用中，都会关闭重回队列，也就是设置为False。
 
 
 
-#### 参考 api
+### 参考 api
 
 `void basicNack(long deliveryTag, boolean multiple, boolean requeue) throws IOException;`
 
@@ -340,7 +348,7 @@ succuss ack
 
 
 
-####如何设置手动 Ack 、Nack 以及重回队列
+### 如何设置手动 Ack 、Nack 以及重回队列
 
 + 首先我们发送五条消息，将每条消息对应的循环下标 i 放入消息的 `properties` 中作为标记，以便于我们在后面的回调方法中识别。
 

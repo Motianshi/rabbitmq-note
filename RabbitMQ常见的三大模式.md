@@ -1,4 +1,9 @@
-### Direct 模式
+- [Direct 模式](#direct---)
+- [Topic 模式](#topic---)
+- [Fanout 模式](#fanout---)
+-----
+
+## Direct 模式
 
 + 所有发送到 Direct Exchange 的消息被转发到 RouteKey 中指定的 Queue。
 + Direct 模式可以使用 RabbitMQ 自带的 Exchange: default Exchange，所以不需要将 Exchange 进行任何绑定(binding)操作。
@@ -108,7 +113,7 @@ public class DirectConsumer {
 
 
 
-### Topic 模式
+## Topic 模式
 
 可以使用通配符进行模糊匹配
 
@@ -228,7 +233,7 @@ Send message : this is topc msg
 
 
 
-###Fanout 模式
+## Fanout 模式
 
 不处理路由键，只需要简单的将队列绑定到交换机上发送到交换机的消息都会被转发到与该交换机绑定的所有队列上。
 Fanout交换机转发消息是最快的。
